@@ -285,7 +285,6 @@ class App extends React.Component {
   mincounter = 20 * 60;
   hourcounter = 10 * 60;
   assign = { b: 0, c: 0, d: 0, e: 0, f: 10 };
-  old = { b: 10, c: 10, d: 10, e: 10 };
 
   componentDidMount() {
     const obj = this;
@@ -326,12 +325,12 @@ class App extends React.Component {
       amount = (type == "rmin" ? 20 : 10) * 60 + current;
       hand.style.transition = "60s linear";
     } else {
-      const pos = posi[type == "rmin" ? 0 : 1];
+      const pos = posi[type == "rmin" ? 1 : 0];
       if (current % 360 > pos) {
         movement = pos + 360 - (current % 360);
         amount = movement + current;
       } else {
-        movement = pos - (current % 360);
+        movement = current % 360 == pos % 360 ? 0 : pos - (current % 360);
         amount = current + movement;
       }
       hand.style.transition = `${movement / 40}s linear`;
@@ -354,17 +353,14 @@ class App extends React.Component {
     this.assign["e"] = Number(minutes.substr(1, 1));
 
     for (var x of this.letters) {
-      if (this.assign[x] != this.old[x]) {
-        const array = document.querySelectorAll(`.${x}`);
-        for (var i = 0; i < array.length; i++) {
-          const minHand = array[i].firstChild.firstChild.children[1];
-          const hourHand = array[i].firstChild.firstChild.children[2];
-          const pos = this.position[this.assign[x]][i];
-          this.helper(minHand, "rmin", pos);
+      const array = document.querySelectorAll(`.${x}`);
+      for (var i = 0; i < array.length; i++) {
+        const minHand = array[i].firstChild.firstChild.children[1];
+        const hourHand = array[i].firstChild.firstChild.children[2];
+        const pos = this.position[this.assign[x]][i];
+        this.helper(minHand, "rmin", pos);
 
-          this.helper(hourHand, "rhour", pos);
-          this.old[x] = this.assign[x];
-        }
+        this.helper(hourHand, "rhour", pos);
       }
     }
   }
