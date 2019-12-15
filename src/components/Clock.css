@@ -24,7 +24,7 @@
 }
 
 .minute-hand {
-  transition: 2s linear;
+  transition: 60s linear;
   position: absolute;
   right: 50%;
   transform: translate(50%) rotate(0deg);
@@ -35,7 +35,7 @@
 }
 
 .hour-hand {
-  transition: 2s linear;
+  transition: 60s linear;
   position: absolute;
   top: 50%;
   right: 50%;
